@@ -6,5 +6,25 @@
   <body>
     <script type="text/javascript" src="vendor/turf.min.js"></script>
     <script type="text/javascript" src="data/stations.js"></script>
+    <script type="text/javascript">
+      var willisTower = turf.point([-87.635915, 41.878876]);
+
+      console.time('Distance calc');
+      var distances = STATIONS.features.map(function(station){
+        return {
+          station: station.properties.name,
+          miles: turf.distance(willisTower, station, 'miles')
+        }
+      });
+      console.timeEnd('Distance calc');
+
+      console.time('Distance sort');
+      distances.sort(function(a, b){
+        return a.miles - b.miles;
+      });
+      console.timeEnd('Distance sort');
+
+      console.table(distances);
+    </script>
   </body>
 </html>
